@@ -26,6 +26,13 @@ type Item struct {
 	ID   uint8
 }
 
+// Для выбора сложности
+var Difficulty uint8
+
+// Для меню
+var MenuValue uint8
+
 func main() {
 	screen.InitScreenWithText()
+	screen.StartMenu(MenuValue)
 }
