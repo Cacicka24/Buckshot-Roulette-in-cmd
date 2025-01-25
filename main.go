@@ -2,6 +2,8 @@ package main
 
 import (
 	"Game/screen"
+	"fmt"
+	"os"
 )
 
 // Общая стркуктура для игрока и дилера
@@ -9,7 +11,7 @@ type Entity struct {
 	health    uint8
 	alive     bool
 	inventory [8]uint8
-	blocked   bool
+	blocked   bool //Для наручников
 }
 
 func (e *Entity) get_1_damage() {
@@ -32,7 +34,26 @@ var Difficulty uint8
 // Для меню
 var MenuValue uint8
 
+func checkMenuValue(MenuValue uint8) uint8 {
+check:
+	fmt.Scan(&MenuValue)
+	if MenuValue == 1 {
+		return 1
+	}
+	if MenuValue == 2 {
+		os.Exit(0)
+	}
+	if MenuValue > 2 {
+		fmt.Print("\033[1A") //вверх
+		fmt.Print("Введите число возле того действия, которое вы хотите совершить: ")
+		goto check
+	}
+	return MenuValue
+}
+
 func main() {
 	screen.InitScreenWithText()
-	screen.StartMenu(MenuValue)
+	screen.StartMenu(&MenuValue)
+	checkMenuValue(MenuValue)
+	screen.ChoiceDifficulty(&Difficulty)
 }

@@ -2,26 +2,8 @@ package screen
 
 import (
 	"fmt"
-	"os"
 	"time"
 )
-
-func checkMenuValue(MenuValue uint8) uint8 {
-check:
-	fmt.Scan(&MenuValue)
-	if MenuValue == 1 {
-		return 1
-	}
-	if MenuValue == 2 {
-		os.Exit(0)
-	}
-	if MenuValue > 2 {
-		fmt.Print("\033[1A") //вверх
-		fmt.Print("Введите число возле того действия, которое вы хотите совершить: ")
-		goto check
-	}
-	return MenuValue
-}
 
 func goToStartLn() {
 	fmt.Print("\r")
@@ -36,7 +18,9 @@ func cleanScreen() {
 }
 
 func InitScreen() {
+	fmt.Print("\033[H") //указатель на начальное положение
 	cleanScreen()
+	fmt.Print("\033[H") //указатель на начальное положение
 	fmt.Print("⌈")
 	fmt.Print("\033[150C") //Вправо
 	fmt.Print("⌉")
@@ -69,7 +53,7 @@ func InitScreenWithText() {
 	time.Sleep(10 * time.Second)
 }
 
-func StartMenu(MenuValue uint8) {
+func StartMenu(MenuValue *uint8) uint8 {
 	//чистим экран
 	cleanScreen()
 	fmt.Print("\033[H") //указатель на начальное положение
@@ -94,6 +78,50 @@ func StartMenu(MenuValue uint8) {
 	fmt.Print("⟨2⟩ Выход")
 	goToStartLn()
 	fmt.Print("\033[15B") //Вниз
-	checkMenuValue(MenuValue)
-	time.Sleep(10 * time.Second)
+	fmt.Scan(&MenuValue)
+	//time.Sleep(100 * time.Second)
+	return *MenuValue
+}
+
+func ChoiceDifficulty(Difficulty *uint8) uint8 {
+	fmt.Print("\033[H") //указатель на начальное положение
+	cleanScreen()
+	fmt.Print("\033[H") //указатель на начальное положение
+	fmt.Print("⌈")
+	fmt.Print("\033[150C") //Вправо
+	fmt.Print("⌉")
+	fmt.Print("\033[24B") //вниз
+	fmt.Print("\033[1D")  //влево
+	fmt.Print("⌋")
+	goToStartLn()
+	fmt.Print("⌊")
+	fmt.Print("\033[H")   //указатель на начальное положение
+	fmt.Print("\033[25B") //вниз
+	fmt.Print("\033[18A") //вверх
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("ВЫберите сложность:")
+	fmt.Print("\033[1B") //Вниз
+	goToStartLn()
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("⟨1⟩Очень легкая")
+	fmt.Print("\033[1B") //Вниз
+	goToStartLn()
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("⟨2⟩Легкая")
+	fmt.Print("\033[1B") //Вниз
+	goToStartLn()
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("⟨3⟩Средняя")
+	fmt.Print("\033[1B") //Вниз
+	goToStartLn()
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("⟨3⟩Сложная")
+	fmt.Print("\033[1B") //Вниз
+	goToStartLn()
+	fmt.Print("\033[67C") //Вправо
+	fmt.Print("⟨4⟩Очень сложно")
+	fmt.Print("\033[11B") //Вниз
+	goToStartLn()
+	fmt.Scan(&Difficulty)
+	return *Difficulty
 }
